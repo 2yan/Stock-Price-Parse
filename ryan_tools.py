@@ -15,6 +15,7 @@ def find_column_id(findme , row ):
         if  (findme.lower() in row[iterator].lower()) :
             return iterator
         iterator = iterator + 1
+    return False
 
 def get_month( datetime):
     return datetime.strftime("%B")
@@ -27,24 +28,16 @@ def read_date(text):
         try:
             return datetime.datetime.strptime(text, fmt)
         except ValueError:
-            return date_parse(text)
-
-
-
-            
+            return date_parse(text)            
             pass
     raise ValueError('No Valid Date found in :' + str(text))
 
 
-def getdate(date, sep ='/'):
-    if (type(date) == datetime.datetime):
+def get_date_str(date, sep ='/'):
+    try:
         return str(date.month) + sep + str(date.day) + sep + str(date.year)
-
-
-def date_to_str(date, sep = '/' ):
-    return( str(date.month) + sep + str(date.day) + sep + str(date.year) )
-
-
+    except AttributeError:
+        return get_date_str(read_date(date), sep )
 
 def s_s( number, spaces = 8 ):
     return ( str(number).ljust(spaces) )
@@ -88,4 +81,5 @@ def print_list(list_of_things):
 
 def last_date_of_month(date_time):
     last = calendar.monthrange( date_time.year, date_time.month)[1]
-    return datetime.datetime(date_time.year, date_time.month, last )
+    return datetime.datetime(date_time.year, date_time.month, last, 23, 59, 59, 999999 )
+
